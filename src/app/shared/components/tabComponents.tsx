@@ -13,7 +13,7 @@ export const GenericTab: React.FC<{children: ReactElement}> = ({children}) => {
 export const ProjectTab: React.FC<{children: ReactElement, path: string}> = ({children, path}) => {
     
     return (
-        <div>
+        <div className="transition ease-in-out delay-100 duration-200 blue-500/20 hover:-translate-y-1 hover:scale-105">
             <Link href={path} target="_blank">
                 {children}
             </Link>

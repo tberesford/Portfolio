@@ -10,7 +10,7 @@ export default function Home() {
         <NavbarComponent/>
       </div>
       <div className="grid grid-cols-1 p-6 md:grid-cols-2 md:gap-16 md:p-16  font-[family-name:var(--font-geist-sans)] justify-center">
-        <div className="mt-8">
+        <div className="mt-0 sm:mt-8">
           <About />
         </div>
         <div className="">
