@@ -5,11 +5,8 @@ import { Project } from "../models/project"
 export const HomeLayout: React.FC<HomeContent> = (content) => {
     return (
         <>
-            <div className="mx-auto m-16 items-center">
+            <div className="mx-auto md:mt-6 lg:m-10 lg:mt-24 items-center">
                 <div className="items-center">
-                    <div className="text-6xl mb-6">
-                        {content.title}
-                    </div>
                     <div className="text-xl">
                         {content.contents.map((item, index) => <div key={index} className="m-3">{item}</div>)}
                     </div>
