@@ -17,7 +17,7 @@ export default function Home() {
           <Projects />
         </div>
       </div>
-      <div className="place-items-center">
+      <div className="grid justify-center">
         <Footer />
       </div>
     </div>
