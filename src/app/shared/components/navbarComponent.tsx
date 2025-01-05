@@ -5,7 +5,7 @@ import Link from "next/link";
 export default function NavbarComponent(){
     const menuItems = [
         {title: "Power Dashboard", url: "https://www.powerdashboard.co.uk"},
-        {title: "Solar", url: "https://www.powerdashboard.co.uk/tesla-battery"}, 
+        {title: "Solar", url: "/solar"}, 
         {title: "Zappi Charger", url: "https://github.com/tberesford/Zappi"},
         {title: "Connect 4", url: "https://github.com/tberesford/Connect4"},
     ]
