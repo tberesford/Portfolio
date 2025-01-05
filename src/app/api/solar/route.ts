@@ -7,10 +7,6 @@ async function ParseData(day: string){
 
     let blobName = '';
     switch(day){
-        // case '0': {  // This needs data compiling security due to file size
-        //     blobName = 'all' + blobName;
-        //     break;
-        // }
         case '1': {
             blobName = 'day';
             break;
