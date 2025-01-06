@@ -1,37 +1,16 @@
-import { BlobServiceClient } from "@azure/storage-blob";
-import { NextRequest } from "next/server";
-
-async function ParseData(day: string){       
-    const service = BlobServiceClient.fromConnectionString(process.env.AZURE_CONN_STRING);
-    const container = service.getContainerClient(process.env.CONTAINER);
-
-    let blobName = '';
-    switch(day){
-        case '1': {
-            blobName = 'day';
-            break;
-        }
-        case '7': {
-            blobName = 'week';
-            break;
-        }
-        case '31': {
-            blobName = 'month';
-            break;
-        }
-    }
-
-    const blob = container.getBlobClient(blobName + "Data.json");
-    const download = await blob.downloadToBuffer();
-    const data = await JSON.parse(download.toString());
-    return data;
-}
+import { BlobService } from "@/app/shared/services/BlobService";
+import { ValidateService } from "@/app/shared/services/ValidateService";
+import { SolarModel } from "@/app/solar/interfaces/solarmodel";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const dayRange = searchParams.get("dayrange") ?? "";
-    if(dayRange){
-        return Response.json(await ParseData(dayRange));
+    try{
+        const response = await BlobService(dayRange);
+        const data = ValidateService<SolarModel>(response);
+        return NextResponse.json({data: data, status: 200});
+    } catch (error){
+        return NextResponse.json({error: error, status: 500});
     }
-    return Response.json("Error!");
 }

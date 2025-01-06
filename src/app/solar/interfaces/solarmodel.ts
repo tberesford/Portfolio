@@ -1,5 +1,3 @@
-
-
 export interface SolarModel {
     'TS': Date,
     'PERCENT_CHARGED': number,
