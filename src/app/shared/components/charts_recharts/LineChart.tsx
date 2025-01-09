@@ -1,7 +1,20 @@
 'use client';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { LineChart, Line, Tooltip, XAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, Tooltip, XAxis, CartesianGrid, ResponsiveContainer, YAxis } from 'recharts';
+import { CurveType } from 'recharts/types/shape/Curve';
+
+interface CustomLineProps {
+    key: string,
+    type: CurveType,
+    strokeWidth: number,
+    dot: boolean,
+    stroke: string
+}
+
+const CustomLine = (props: CustomLineProps) => {
+    return <Line dataKey={props.key} type={props.type} strokeWidth={props.strokeWidth} dot={props.dot} stroke={props.stroke}/>
+}
 
 const CustomLineChart: React.FC = () => {
     var [LineData, setLineData] = useState([]);
@@ -17,8 +30,6 @@ const CustomLineChart: React.FC = () => {
     return (
         <ResponsiveContainer width='90%' height='80%'>
             <LineChart data={LineData} margin={{ right: 20, left: 20 }}>
-                <Line dataKey='SOLAR' type="natural" strokeWidth={3} dot={false} stroke={`hsl(221.2, 83.2%, 53.3%)`}/>
-                <Line dataKey='GRID' type="natural" strokeWidth={3} dot={false} stroke={`hsl(201.2, 83.2%, 53.3%)`}/>
                 <CartesianGrid vertical={false} strokeOpacity={0.3}/>
                 <XAxis 
                     dataKey='TS'
@@ -31,6 +42,8 @@ const CustomLineChart: React.FC = () => {
                         const axisDate = date.toLocaleTimeString("en-GB", {month: 'short', day: 'numeric'});
                         return axisDate;}}
                 />
+
+                <YAxis unit="%" tickMargin={8} padding={{top: 1}}/>
                 
                 <Tooltip labelFormatter={(value) => { 
                     const date = new Date(value);
@@ -38,6 +51,9 @@ const CustomLineChart: React.FC = () => {
                     return axisDate;
                     }}
                 />
+
+                {/* recharts currently has no method for creating components - must call the function directly */}
+                {CustomLine({key: 'PERCENT_CHARGED', type: 'natural', strokeWidth: 2, dot: false, stroke: `hsl(221.2, 83.2%, 53.3%)`})}
             </LineChart>
         </ResponsiveContainer>
     )
