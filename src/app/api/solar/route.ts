@@ -7,10 +7,10 @@ export async function GET(request: NextRequest) {
     const searchParams = request.nextUrl.searchParams;
     const dayRange = searchParams.get("dayrange") ?? "";
     try{
-        const response = await BlobService(dayRange);
-        const data = ValidateService<SolarModel>(response);
-        return NextResponse.json({data: data, status: 200});
+        const blob = await BlobService(dayRange);
+        const data = ValidateService<SolarModel>(blob);
+        return NextResponse.json(data);
     } catch (error){
-        return NextResponse.json({error: error, status: 500});
+        return NextResponse.json(error);
     }
 }

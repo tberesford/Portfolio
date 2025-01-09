@@ -1,3 +1,4 @@
+
 export async function FilterData<T>(data: T[], properties: (keyof T)[], index: keyof T){
     return data.map(obj => ({
         [index]: obj[index],

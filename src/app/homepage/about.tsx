@@ -1,5 +1,5 @@
-import { HomeContent } from "../models/homepage"
-import { HomeLayout } from "./layouts"
+import { HomeContent } from "../models/homepage";
+import { HomeLayout } from "./layouts";
 
 const aboutMe: HomeContent = {
     title: "Tom Beresford",

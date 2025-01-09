@@ -6,7 +6,6 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
     "test": "jest",
     "test:watch": "jest --watch"
   },
@@ -41,11 +40,13 @@
     "@types/node": "^20.17.10",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19",
+    "globals": "^15.14.0",
     "jest-environment-jsdom": "^29.7.0",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.19.1"
   }
 }
