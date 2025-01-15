@@ -6,6 +6,10 @@ export async function BlobService(day: string){
 
     let blobName = '';
     switch(day){
+        case '0': {
+            blobName = 'all'
+            break;
+        }
         case '1': {
             blobName = 'day';
             break;
