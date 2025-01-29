@@ -1,12 +1,12 @@
-import { BlobService } from "@/app/shared/services/BlobService";
-import { useSearchParams } from "next/navigation";
+// import { BlobService } from "@/services/BlobService";
+// import { useSearchParams } from "next/navigation";
 
-export async function GET(req: Request, res: Response){
+// export async function GET(req: Request, res: Response){
 
-    const searchParams = useSearchParams();
-    const range = searchParams.get("dayrange");
+//     const searchParams = useSearchParams();
+//     const range = searchParams.get("dayrange");
     
-    if(range){
-        const blob = await BlobService(range);
-    }
-}
+//     if(range){
+//         const blob = await BlobService(range);
+//     }
+// }

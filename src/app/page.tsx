@@ -1,7 +1,7 @@
-import { About } from "@/app/homepage/about";
-import { Projects } from "./homepage/projects";
-import Footer from "./homepage/footer";
-import NavbarComponent from "./shared/components/navbarComponent";
+import { About } from "@/ui/homepage/about";
+import { Projects } from "@/ui/homepage/projects";
+import Footer from "@/ui/homepage/footer";
+import NavbarComponent from "@/components/navbarComponent";
 
 export default function Home() {
   return (

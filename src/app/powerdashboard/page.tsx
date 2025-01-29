@@ -1,4 +1,4 @@
-import NavbarComponent from "../shared/components/navbarComponent";
+import NavbarComponent from "../../components/navbarComponent";
 
 
 export default function PowerDashboard() {

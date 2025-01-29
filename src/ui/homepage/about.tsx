@@ -1,4 +1,4 @@
-import { HomeContent } from "../models/homepage";
+import { HomeContent } from "@/models/homepage";
 import { HomeLayout } from "./layouts";
 
 const aboutMe: HomeContent = {

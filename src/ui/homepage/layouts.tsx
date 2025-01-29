@@ -1,5 +1,5 @@
-import { HomeContent } from "../models/homepage"
-import { Project } from "../models/project"
+import { HomeContent } from "@/models/homepage"
+import { Project } from "@/models/project"
 
 
 export const HomeLayout: React.FC<HomeContent> = (content) => {
