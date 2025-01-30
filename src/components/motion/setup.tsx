@@ -38,14 +38,14 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
   fromRef,
   toRef,
   curvature = 0,
-  reverse = false, // Include the reverse prop
-  duration = Math.random() * 3 + 4,
+  reverse,// = false, // Include the reverse prop
+  duration, //= Math.random() * 3 + 4,
   delay = 0,
-  pathColor = 'gray',
+  pathColor, // = 'gray',
   pathWidth = 2,
   pathOpacity = 0.2,
-  gradientStartColor = '#4d40ff',
-  gradientStopColor = '#4043ff',
+  gradientStartColor, //= '#4d40ff',
+  gradientStopColor, //= '#4043ff',
   startXOffset = 0,
   startYOffset = 0,
   endXOffset = 0,
@@ -162,11 +162,11 @@ export const AnimatedBeam: React.FC<AnimatedBeamProps> = ({
           strokeOpacity: 0,
         }}
         animate={{
-          strokeWidth: pathWidth * 1.5, // or any scale factor you prefer
+          strokeWidth: pathWidth * 2, // or any scale factor you prefer
           strokeOpacity: 1,
         }}
         transition={{
-          duration: 2, // adjust as needed
+          duration: duration, // adjust as needed
           delay: delay, // use the same delay as the gradient animation
         }}
       />
@@ -217,7 +217,7 @@ export const Circle = forwardRef<
     <div
       ref={ref}
       className={cn(
-        'z-10 flex h-12 w-12 items-center justify-center rounded-full border-2 bg-white p-3 shadow-[0_0_20px_-12px_rgba(0,0,0,0.8)]',
+        'z-10 flex h-16 w-16 items-center justify-center rounded-full border-2 bg-white p-3 shadow-[0_0_20px_-12px_rgba(0,0,0,0.8)]',
         className
       )}
     >

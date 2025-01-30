@@ -22,9 +22,9 @@ const CustomBarChart: React.FC = () => {
     return (
         <ResponsiveContainer width='90%' height='80%'>
             <BarChart data={BarData} margin={{ right: 20, left: 20 }}>
-                <Bar dataKey={'SOLAR'} fill={`hsl(211.2, 83.2%, 53.3%)`}/>
-                <Bar dataKey={'LOAD'} fill={'hsl(181.2, 73.2%, 53.3%)'} fillOpacity={0.3}/>
-                <YAxis domain={[0,5]} unit="kW/h"/>
+                <Bar dataKey={'SOLAR'} fill={`hsl(211.2, 83.2%, 53.3%)`} fontSize={14}/>
+                <Bar dataKey={'LOAD'} fill={'hsl(181.2, 73.2%, 53.3%)'} fontSize={14}/>
+                <YAxis domain={[0,5]} unit="kW/h" fontSize={14}/>
                 <CartesianGrid vertical={false} strokeOpacity={0.3}/>
                 
                 <Tooltip shared={false}/>

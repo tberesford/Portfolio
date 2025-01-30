@@ -37,6 +37,7 @@ const CustomLineChart: React.FC = () => {
                     axisLine={false}
                     tickMargin={8}
                     minTickGap={32} 
+                    fontSize={14}
                     tickFormatter={(value) => { 
                         const date = new Date(value);
                         const axisDate = date.toLocaleTimeString("en-GB", 
@@ -49,7 +50,7 @@ const CustomLineChart: React.FC = () => {
                         return axisDate;}}
                 />
 
-                <YAxis unit="%" tickMargin={8} padding={{top: 5}}/>
+                <YAxis unit="%" tickMargin={8} padding={{top: 5}} fontSize={14}/>
                 
                 <Tooltip labelFormatter={(value) => { 
                     const date = new Date(value);

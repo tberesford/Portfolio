@@ -40,13 +40,12 @@ const CustomAreaChart: React.FC = () => {
                     dataKey="TS"
                     tickLine={false}
                     axisLine={false}
-                    tickMargin={8}
+                    tickMargin={6}
                     minTickGap={32}
+                    fontSize={14}
                     tickFormatter={(value) => {
                         const date = new Date(value)
                         return date.toLocaleTimeString("en-GB", {
-                            hour: "2-digit",
-                            minute: "2-digit",
                             day: "numeric",
                             month: "short"
                         })
