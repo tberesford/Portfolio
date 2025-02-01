@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Area, AreaChart, ResponsiveContainer, XAxis, Tooltip } from "recharts";
+import { Area, AreaChart, ResponsiveContainer, XAxis, Tooltip, YAxis } from "recharts";
+import GetTimeLabels from "@/services/ChartService/getTimeLabels";
+import { SolarArray } from "@/types/SolarTypes";
 
 const CustomAreaChart: React.FC = () => {
-    const [AreaData, setAreaData] = useState([]);
+    const [AreaData, setAreaData] = useState<SolarArray>([]);
     useEffect(() => {
         async function fetchData(){
             const response = await axios.get("/api/solar?dayrange=1");
             setAreaData(response.data);
         }
-        //Initial fetch
         fetchData();
-        // Interval
         setInterval(fetchData, (5*60*1000)); // 5 minutes?
     }, [])
 
     return (
         <ResponsiveContainer width='90%' height='80%'>
-            <AreaChart data={AreaData}>
+            <AreaChart data={AreaData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                 <defs>
                     <linearGradient id="colorSolar" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor={`hsl(211.2, 83.2%, 53.3%)`} stopOpacity={0.8}/>
@@ -36,21 +36,24 @@ const CustomAreaChart: React.FC = () => {
                 <Area dataKey={'SOLAR'} type={'bump'} stroke={'hsl(221.2, 83.2%, 53.3%)'} strokeWidth={2} fill='url(#colorSolar)' fillOpacity={0.4}/>
                 <Area dataKey={'LOAD'} type={'bump'} stroke={'hsl(201.2, 83.2%, 53.3%)'} strokeWidth={2} fill='url(#colorLoad)' fillOpacity={0.4}/>
                 <Area dataKey={'GRID'} type={'bump'} stroke={'hsl(181.2, 73.2%, 53.3%)'} strokeWidth={2} fill='url(#colorGrid)' fillOpacity={0.4}/>
+
                 <XAxis
                     dataKey="TS"
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={6}
-                    minTickGap={32}
                     fontSize={14}
+                    tickMargin={7}
+                    ticks={GetTimeLabels(AreaData)}
+                    interval={1}
                     tickFormatter={(value) => {
                         const date = new Date(value)
                         return date.toLocaleTimeString("en-GB", {
                             day: "numeric",
-                            month: "short"
+                            month: "short",
+                            hour: "2-digit",
+                            minute: "2-digit"
                         })
                     }}
                 />
+                <YAxis tickMargin={3} unit={'kW/h'} fontSize={14}/>
 
                 <Tooltip
                     labelFormatter={(value) => {

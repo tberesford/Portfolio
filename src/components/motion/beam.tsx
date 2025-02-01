@@ -12,49 +12,50 @@ import SolarModels from '@/models/solarmodel';
 
 interface AnimatedProps {
   name: string,
-  flowDirection: boolean,
+  flowDirection: number, // 0 - No transmission, 1 - House is consuming, 2 - House is exporting
   containerRef: React.RefObject<HTMLDivElement | null>,
   fromRef: React.RefObject<HTMLDivElement | null>,
   toRef: React.RefObject<HTMLDivElement | null>,
-  beamColor: string
+  beamColor: string,
+  pathColor: string
 }
 
 type SolarData = z.infer<typeof SolarModels>;
 
 
 function CreateAnimatedBeam(animatedProps: AnimatedProps){
-  if (animatedProps.name !== "grid" && animatedProps.flowDirection === false){
-    // Solar cannot import, Car cannot export
-    return (
-      <AnimatedBeam
-        duration={0}
-        containerRef={animatedProps.containerRef}
-        fromRef={animatedProps.fromRef}
-        toRef={animatedProps.toRef}
-        reverse={animatedProps.flowDirection}
-        pathColor="red"
-        gradientStartColor={animatedProps.beamColor}
-        gradientStopColor={animatedProps.beamColor}
-        dotted
-        dotSpacing={5}
-      />
-    )
-  } else {
-    return (
-      <AnimatedBeam
-        duration={4}
-        containerRef={animatedProps.containerRef}
-        fromRef={animatedProps.fromRef}
-        toRef={animatedProps.toRef}
-        reverse={animatedProps.flowDirection}
-        pathColor="gray"
-        gradientStartColor={animatedProps.beamColor}
-        gradientStopColor={animatedProps.beamColor}
-        dotted
-        dotSpacing={5}
-      />
-    )
+  const beamKey = `${animatedProps.name}${animatedProps.flowDirection}`;
+  let duration;
+  let reverse = false;
+  let dotSpacing = 0;
+  let pathColor = animatedProps.pathColor;
+  
+  if(animatedProps.flowDirection == 0){
+    duration = 0;
+    dotSpacing = 5;
+    pathColor = 'gray';
+  } else if(animatedProps.flowDirection == 1){
+    duration = 5;
+  } else if(animatedProps.flowDirection == 2){
+    duration = 4;
+    reverse = true;
   }
+
+  return (
+    <AnimatedBeam
+      key={beamKey}
+      duration={duration}
+      containerRef={animatedProps.containerRef}
+      fromRef={animatedProps.fromRef}
+      toRef={animatedProps.toRef}
+      reverse={reverse}
+      pathColor={pathColor}
+      gradientStartColor={animatedProps.beamColor}
+      gradientStopColor={animatedProps.beamColor}
+      dotted
+      dotSpacing={dotSpacing}
+    />
+  )
 }
 
 export default function CustomBeamChart() {
@@ -65,10 +66,10 @@ export default function CustomBeamChart() {
   const carRef = useRef<HTMLDivElement>(null);
   const batteryRef = useRef<HTMLDivElement>(null);
 
-  const [isGridExporting, setIsGridExporting] = useState(false);
-  const [isCarCharging, setIsCarCharging] = useState(false);
-  const [isSolar, setIsSolar] = useState(false);
-  const [isBatteryCharging, setIsBatteryCharging] = useState(false);
+  const [isGridExporting, setIsGridExporting] = useState(0);
+  const [isCarCharging, setIsCarCharging] = useState(0);
+  const [isSolar, setIsSolar] = useState(0);
+  const [isBatteryCharging, setIsBatteryCharging] = useState(0);
 
   useEffect(() => {
     // Improve by using context / updates in real time
@@ -78,18 +79,25 @@ export default function CustomBeamChart() {
       const data: SolarData = [response.data[response.data.length - 1]];
       const comparisonData: SolarData = [response.data[response.data.length - 2]];
       
-      data[0].GRID > 0 ? setIsGridExporting(false) : setIsGridExporting(true);
-      data[0].SOLAR > 0 ? setIsSolar(true) : setIsSolar(false);
-      data[0].PERCENT_CHARGED > comparisonData[0].PERCENT_CHARGED ? setIsBatteryCharging(true) : setIsBatteryCharging(false);
+      if(data[0].GRID == 0){
+        setIsGridExporting(0);
+      } else if (data[0].GRID > 0){
+        setIsGridExporting(1);
+      } else {
+        setIsGridExporting(2);
+      }
+      data[0].SOLAR > 0 ? setIsSolar(1) : setIsSolar(0);
+      data[0].PERCENT_CHARGED > comparisonData[0].PERCENT_CHARGED ? setIsBatteryCharging(1) : setIsBatteryCharging(0);
       
       const currentTime = new Date();
       if(currentTime.getHours() > 23 || currentTime.getHours() < 5){
-        setIsCarCharging(true);
+        setIsCarCharging(1);
       } else {
-        setIsCarCharging(false);
+        setIsCarCharging(0);
       }
     }
     fetchData();
+    setInterval(fetchData, 5*60*1000);
   }, [])
 
 
@@ -99,7 +107,8 @@ export default function CustomBeamChart() {
     containerRef: containerRef,
     fromRef: gridRef,
     toRef: homeRef,
-    beamColor: '#4d40ff'
+    beamColor: '#2563eb',
+    pathColor: '#1d4ed8'
   }
   const carAnimatedProps: AnimatedProps = {
     name: "car",
@@ -107,7 +116,8 @@ export default function CustomBeamChart() {
     containerRef: containerRef,
     fromRef: carRef,
     toRef: homeRef,
-    beamColor: '#4ade80'
+    beamColor: '#4ade80',
+    pathColor: '#22c55e'
   }
   const solarAnimatedProps: AnimatedProps = {
     name: "solar",
@@ -115,7 +125,8 @@ export default function CustomBeamChart() {
     containerRef: containerRef,
     fromRef: solarRef,
     toRef: homeRef,
-    beamColor: '#fde047'
+    beamColor: '#fde047',
+    pathColor: '#facc15'
   }
   const batteryAnimatedProps: AnimatedProps = {
     name: "battery",
@@ -123,7 +134,8 @@ export default function CustomBeamChart() {
     containerRef: containerRef,
     fromRef: batteryRef,
     toRef: homeRef,
-    beamColor: '#4338ca'
+    beamColor: '#4338ca',
+    pathColor: '#3730a3'
   }
 
   return (

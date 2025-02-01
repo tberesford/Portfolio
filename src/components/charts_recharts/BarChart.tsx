@@ -28,7 +28,7 @@ const CustomBarChart: React.FC = () => {
                 <CartesianGrid vertical={false} strokeOpacity={0.3}/>
                 
                 <Tooltip shared={false}/>
-                <Legend/>
+                <Legend display={'Solar'}/>
             </BarChart>
         </ResponsiveContainer>
     )

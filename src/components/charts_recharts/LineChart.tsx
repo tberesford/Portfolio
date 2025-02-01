@@ -1,4 +1,6 @@
 'use client';
+import GetTimeLabels from '@/services/ChartService/getTimeLabels';
+import { SolarArray } from '@/types/SolarTypes';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { LineChart, Line, Tooltip, XAxis, CartesianGrid, ResponsiveContainer, YAxis } from 'recharts';
@@ -17,7 +19,7 @@ const CustomLine = (props: CustomLineProps) => {
 }
 
 const CustomLineChart: React.FC = () => {
-    var [LineData, setLineData] = useState([]);
+    var [LineData, setLineData] = useState<SolarArray>([]);
     useEffect(() => {
         async function fetchData() {
             const response = await axios.get("/api/solar?dayrange=1");
@@ -33,11 +35,10 @@ const CustomLineChart: React.FC = () => {
                 <CartesianGrid vertical={false} strokeOpacity={0.3} horizontalValues={[25, 50, 75, 100]}/>
                 <XAxis 
                     dataKey='TS'
-                    tickLine={false}
-                    axisLine={false}
-                    tickMargin={8}
-                    minTickGap={32} 
+                    tickMargin={7}
+                    interval={5}
                     fontSize={14}
+                    ticks={GetTimeLabels(LineData)}
                     tickFormatter={(value) => { 
                         const date = new Date(value);
                         const axisDate = date.toLocaleTimeString("en-GB", 
@@ -49,7 +50,6 @@ const CustomLineChart: React.FC = () => {
                         });
                         return axisDate;}}
                 />
-
                 <YAxis unit="%" tickMargin={8} padding={{top: 5}} fontSize={14}/>
                 
                 <Tooltip labelFormatter={(value) => { 
