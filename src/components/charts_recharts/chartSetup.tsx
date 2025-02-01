@@ -1,5 +1,5 @@
 import React, { Suspense } from "react";
-import { Card } from "../Cards";
+import { Card } from "../ui/Cards";
 import CustomLineChart from "./LineChart";
 
 

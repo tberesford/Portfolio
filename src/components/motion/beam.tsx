@@ -7,8 +7,7 @@ import { IoCarSport } from "react-icons/io5";
 import { IoHome } from "react-icons/io5";
 import { TbHomeEco } from "react-icons/tb";
 import axios from 'axios';
-import { z } from 'zod';
-import SolarModels from '@/models/solarmodel';
+import { SolarArray } from '@/types/SolarTypes';
 
 interface AnimatedProps {
   name: string,
@@ -19,8 +18,6 @@ interface AnimatedProps {
   beamColor: string,
   pathColor: string
 }
-
-type SolarData = z.infer<typeof SolarModels>;
 
 
 function CreateAnimatedBeam(animatedProps: AnimatedProps){
@@ -76,8 +73,8 @@ export default function CustomBeamChart() {
     // Use props instead of call
     async function fetchData(){
       const response = await axios.get("api/solar?dayrange=1");
-      const data: SolarData = [response.data[response.data.length - 1]];
-      const comparisonData: SolarData = [response.data[response.data.length - 2]];
+      const data: SolarArray = [response.data[response.data.length - 1]];
+      const comparisonData: SolarArray = [response.data[response.data.length - 2]];
       
       if(data[0].GRID == 0){
         setIsGridExporting(0);

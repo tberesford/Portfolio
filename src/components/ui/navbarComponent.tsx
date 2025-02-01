@@ -16,7 +16,7 @@ export default function NavbarComponent(){
                 <NavbarMenuToggle className="lg:hidden px-4"/>
                 <NavbarBrand className="md:px-10">
                     <NavbarItem className="text-2xl">
-                        Tom Beresford
+                        <Link href={'/'}>Tom Beresford</Link>
                     </NavbarItem>
                 </NavbarBrand>
             </NavbarContent>

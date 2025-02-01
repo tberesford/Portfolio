@@ -1,6 +1,6 @@
 import { Project } from "@/models/project";
 import { ProjectLayout } from "./layouts";
-import { ProjectCard } from "@/components/Cards";
+import { ProjectCard } from "@/components/ui/Cards";
 
 const ProjectContent: Project[] = [
     {

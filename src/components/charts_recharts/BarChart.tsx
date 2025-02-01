@@ -1,18 +1,15 @@
 'use client';
-import SolarModels from "@/models/solarmodel";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, YAxis } from "recharts";
-import { z } from "zod";
-
-type SolarData = z.infer<typeof SolarModels>;
+import { SolarArray } from "@/types/SolarTypes";
 
 const CustomBarChart: React.FC = () => {
-    const [BarData, setBarData] = useState<SolarData>([]);
+    const [BarData, setBarData] = useState<SolarArray>([]);
     useEffect(() => {
         async function fetchData(){
             const response = await axios.get("/api/solar?dayrange=1");
-            const data: SolarData = [response.data[response.data.length - 1]];
+            const data: SolarArray = [response.data[response.data.length - 1]];
             setBarData(data);
         }
         fetchData();

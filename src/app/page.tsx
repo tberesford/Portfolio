@@ -1,7 +1,7 @@
-import { About } from "@/ui/homepage/about";
-import { Projects } from "@/ui/homepage/projects";
-import Footer from "@/ui/homepage/footer";
-import NavbarComponent from "@/components/navbarComponent";
+import { About } from "@/components/ui/homepage/about";
+import { Projects } from "@/components/ui/homepage/projects";
+import Footer from "@/components/ui/homepage/footer";
+import NavbarComponent from "@/components/ui/navbarComponent";
 
 export default function Home() {
   return (
@@ -9,7 +9,7 @@ export default function Home() {
       <div className="grid grid-rows-1 w-full max-h-28 bg-white">
         <NavbarComponent/>
       </div>
-      <div className="grid grid-cols-1 p-6 md:grid-cols-2 md:gap-16 md:p-16  font-[family-name:var(--font-geist-sans)] justify-center">
+      <div className="grid grid-cols-1 p-6 md:grid-cols-2 md:gap-16 md:p-16 font-[family-name:var(--font-geist-sans)] justify-center">
         <div className="mt-0 sm:mt-8">
           <About />
         </div>
