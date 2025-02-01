@@ -13,25 +13,25 @@ export default function SolarPage () {
             <div className="grid grid-rows-1 w-full max-h-28 bg-white">
                 <NavbarComponent/>
             </div>
-            <div className="grid grid-cols-1 p-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-1 md:gap-16 md:p-16 md:grid-rows-2 font-[family-name:var(--font-geist-sans)] justify-center">
-                <div className="grid row-start-1 grid-cols-6 gap-6">
-                    <div className="grid col-span-2">
-                        <Card>
-                            <CustomLineChart/>
-                        </Card>
-                    </div>
-                    <div className="grid col-span-2">
+            <div className="grid p-6 gap-6 md:gap-16 md:p-16 md:grid-rows-2 grid-cols-1 font-[family-name:var(--font-geist-sans)] justify-center">
+                <div className="grid grid-cols-1 row-start-1 md:grid-cols-4 lg:grid-cols-6 gap-6">
+                    <div className="grid min-h-56 col-span-1 md:col-span-4 lg:col-span-6 xl:col-span-2 order-1 md:order-3 lg:order-3 xl:order-2">
                         <Card>
                             <CustomBeamChart/>
                         </Card>
                     </div>
-                    <div className="grid col-span-2">
+                    <div className="grid min-h-56 col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-2 order-2 sm:order-2 md:order-1 lg:order-1 xl:order-1">
+                        <Card>
+                            <CustomLineChart/>
+                        </Card>
+                    </div>
+                    <div className="grid min-h-56 col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-2 order-3 sm:order-3 md:order-2 lg:order-2 xl:order-3">
                         <Card>
                             <CustomBarChart/>
                         </Card>
                     </div>
                 </div>
-                <div className="grid row-start-2">
+                <div className="grid min-h-56 row-start-2">
                     <Card>
                         <CustomAreaChart/>
                     </Card>
