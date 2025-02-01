@@ -135,39 +135,43 @@ export default function CustomBeamChart() {
     pathColor: '#3730a3'
   }
 
-  return (
-    <div
-      className='relative flex w-full mx-auto items-center justify-center p-10'
-      ref={containerRef}
-    >
-      <div className='flex h-full w-full flex-row items-stretch justify-between gap-10'>
-        <div className='flex flex-col justify-center gap-4'>
-          <Circle ref={solarRef}>
-            <GrActions size={23}/>
-          </Circle>
-          <Circle ref={gridRef}>
-            <GrAction size={23}/>
-          </Circle>
+  if(!containerRef){
+    return <div>Loading...</div>
+  } else {
+    return (
+      <div
+        className='relative flex w-full mx-auto items-center justify-center p-10'
+        ref={containerRef}
+      >
+        <div className='flex h-full w-full flex-row items-stretch justify-between gap-10'>
+          <div className='flex flex-col justify-center gap-4'>
+            <Circle ref={solarRef}>
+              <GrActions size={23}/>
+            </Circle>
+            <Circle ref={gridRef}>
+              <GrAction size={23}/>
+            </Circle>
+          </div>
+          <div className='flex flex-col justify-center gap-4'>
+            <Circle ref={homeRef}>
+              <IoHome size={30}/>
+            </Circle>
+          </div>
+          <div className='flex flex-col justify-center gap-4'>
+            <Circle ref={carRef}>
+              <IoCarSport size={23}/>
+            </Circle>
+            <Circle ref={batteryRef}>
+              <TbHomeEco size={23}/>
+            </Circle>
+          </div>
         </div>
-        <div className='flex flex-col justify-center gap-4'>
-          <Circle ref={homeRef}>
-            <IoHome size={30}/>
-          </Circle>
-        </div>
-        <div className='flex flex-col justify-center gap-4'>
-          <Circle ref={carRef}>
-            <IoCarSport size={23}/>
-          </Circle>
-          <Circle ref={batteryRef}>
-            <TbHomeEco size={23}/>
-          </Circle>
-        </div>
-      </div>
 
-      {CreateAnimatedBeam(solarAnimatedProps)}
-      {CreateAnimatedBeam(gridAnimatedProps)}
-      {CreateAnimatedBeam(carAnimatedProps)}
-      {CreateAnimatedBeam(batteryAnimatedProps)}
-    </div>
-  );
+        {CreateAnimatedBeam(solarAnimatedProps)}
+        {CreateAnimatedBeam(gridAnimatedProps)}
+        {CreateAnimatedBeam(carAnimatedProps)}
+        {CreateAnimatedBeam(batteryAnimatedProps)}
+      </div>
+    );
+  }
 }

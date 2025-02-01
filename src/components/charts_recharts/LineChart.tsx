@@ -28,42 +28,45 @@ const CustomLineChart: React.FC = () => {
         fetchData();
     }, []);
 
-
-    return (
-        <ResponsiveContainer width='90%' height='80%'>
-            <LineChart data={LineData} margin={{ right: 20, left: 20 }}>
-                <CartesianGrid vertical={false} strokeOpacity={0.3} horizontalValues={[25, 50, 75, 100]}/>
-                <XAxis 
-                    dataKey='TS'
-                    tickMargin={7}
-                    interval={5}
-                    fontSize={14}
-                    ticks={GetTimeLabels(LineData)}
-                    tickFormatter={(value) => { 
+    if(!LineData){
+        return <div>Loading...</div>
+    } else {
+        return (
+            <ResponsiveContainer width='90%' height='80%'>
+                <LineChart data={LineData} margin={{ right: 20, left: 20 }}>
+                    <CartesianGrid vertical={false} strokeOpacity={0.3} horizontalValues={[25, 50, 75, 100]}/>
+                    <XAxis 
+                        dataKey='TS'
+                        tickMargin={7}
+                        interval={5}
+                        fontSize={14}
+                        ticks={GetTimeLabels(LineData)}
+                        tickFormatter={(value) => { 
+                            const date = new Date(value);
+                            const axisDate = date.toLocaleTimeString("en-GB", 
+                            {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                day: "numeric",
+                                month: "short"
+                            });
+                            return axisDate;}}
+                    />
+                    <YAxis unit="%" tickMargin={8} padding={{top: 5}} fontSize={14}/>
+                    
+                    <Tooltip labelFormatter={(value) => { 
                         const date = new Date(value);
-                        const axisDate = date.toLocaleTimeString("en-GB", 
-                        {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            day: "numeric",
-                            month: "short"
-                        });
-                        return axisDate;}}
-                />
-                <YAxis unit="%" tickMargin={8} padding={{top: 5}} fontSize={14}/>
-                
-                <Tooltip labelFormatter={(value) => { 
-                    const date = new Date(value);
-                    const axisDate = date.toLocaleTimeString("en-GB", {month: 'short', day: 'numeric'});
-                    return axisDate;
-                    }}
-                />
+                        const axisDate = date.toLocaleTimeString("en-GB", {month: 'short', day: 'numeric'});
+                        return axisDate;
+                        }}
+                    />
 
-                {/* recharts currently has no method for creating components - must call the function directly */}
-                {CustomLine({key: 'PERCENT_CHARGED', type: 'linear', strokeWidth: 2, dot: false, stroke: `hsl(221.2, 83.2%, 53.3%)`})}
-            </LineChart>
-        </ResponsiveContainer>
-    )
+                    {/* recharts currently has no method for creating components - must call the function directly */}
+                    {CustomLine({key: 'PERCENT_CHARGED', type: 'linear', strokeWidth: 2, dot: false, stroke: `hsl(221.2, 83.2%, 53.3%)`})}
+                </LineChart>
+            </ResponsiveContainer>
+        )
+    }
 }
 
 export default CustomLineChart;
