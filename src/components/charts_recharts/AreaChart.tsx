@@ -7,6 +7,7 @@ import { SolarArray } from "@/types/SolarTypes";
 
 const CustomAreaChart: React.FC = () => {
     const [AreaData, setAreaData] = useState<SolarArray>([]);
+    const [tickInterval, setTickInterval] = useState(1);
     useEffect(() => {
         async function fetchData(){
             const response = await axios.get("/api/solar?dayrange=1");
@@ -16,10 +17,25 @@ const CustomAreaChart: React.FC = () => {
         setInterval(fetchData, (5*60*1000)); // 5 minutes?
     }, [])
 
+    useEffect(() => {
+        const updateTickInterval = () => {
+        if (window.innerWidth < 640) {
+            setTickInterval(7); // Show fewer ticks on small screens
+        } else if(window.innerWidth < 1024){
+            setTickInterval(4);
+        } else {
+            setTickInterval(1); // Default behavior (auto)
+        }
+        };
+
+        updateTickInterval(); // Set initially
+        window.addEventListener('resize', updateTickInterval);
+        return () => window.removeEventListener('resize', updateTickInterval);
+    }, []);
+
     if(!AreaData){
         return <div>Loading...</div>
     } else {
-
         return (
             <ResponsiveContainer width='90%' height='80%'>
                 <AreaChart data={AreaData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
@@ -47,7 +63,7 @@ const CustomAreaChart: React.FC = () => {
                         fontSize={14}
                         tickMargin={7}
                         ticks={GetTimeLabels(AreaData)}
-                        interval={1}
+                        interval={tickInterval}
                         tickFormatter={(value) => {
                             const date = new Date(value)
                             return date.toLocaleTimeString("en-GB", {

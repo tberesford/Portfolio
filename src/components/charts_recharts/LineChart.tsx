@@ -20,6 +20,8 @@ const CustomLine = (props: CustomLineProps) => {
 
 const CustomLineChart: React.FC = () => {
     var [LineData, setLineData] = useState<SolarArray>([]);
+    var [tickInterval, setTickInterval] = useState(0);
+
     useEffect(() => {
         async function fetchData() {
             const response = await axios.get("/api/solar?dayrange=1");
@@ -27,6 +29,24 @@ const CustomLineChart: React.FC = () => {
         }
         fetchData();
     }, []);
+
+    useEffect(() => {
+            const updateTickInterval = () => {
+            if (window.innerWidth < 640) {
+                setTickInterval(7); // Show fewer ticks on small screens
+            } else if(window.innerWidth < 1024){
+                setTickInterval(5);
+            } else if(window.innerWidth < 1536){
+                setTickInterval(7);
+            } else {
+                setTickInterval(5); // Default behavior (auto)
+            }
+            };
+    
+            updateTickInterval(); // Set initially
+            window.addEventListener('resize', updateTickInterval);
+            return () => window.removeEventListener('resize', updateTickInterval);
+        }, []);
 
     if(!LineData){
         return <div>Loading...</div>
@@ -38,7 +58,7 @@ const CustomLineChart: React.FC = () => {
                     <XAxis 
                         dataKey='TS'
                         tickMargin={7}
-                        interval={5}
+                        interval={tickInterval}
                         fontSize={14}
                         ticks={GetTimeLabels(LineData)}
                         tickFormatter={(value) => { 

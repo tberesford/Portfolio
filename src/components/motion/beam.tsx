@@ -7,7 +7,7 @@ import { IoCarSport } from "react-icons/io5";
 import { IoHome } from "react-icons/io5";
 import { TbHomeEco } from "react-icons/tb";
 import axios from 'axios';
-import { SolarArray } from '@/types/SolarTypes';
+import { SolarObject } from '@/types/SolarTypes';
 
 interface AnimatedProps {
   name: string,
@@ -63,6 +63,7 @@ export default function CustomBeamChart() {
   const carRef = useRef<HTMLDivElement>(null);
   const batteryRef = useRef<HTMLDivElement>(null);
 
+  const [powerwallData, setPowerwallData] = useState<SolarObject>();
   const [isGridExporting, setIsGridExporting] = useState(0);
   const [isCarCharging, setIsCarCharging] = useState(0);
   const [isSolar, setIsSolar] = useState(0);
@@ -73,18 +74,36 @@ export default function CustomBeamChart() {
     // Use props instead of call
     async function fetchData(){
       const response = await axios.get("api/solar?dayrange=1");
-      const data: SolarArray = [response.data[response.data.length - 1]];
-      const comparisonData: SolarArray = [response.data[response.data.length - 2]];
-      
-      if(data[0].GRID == 0){
+      const data: SolarObject = response.data[response.data.length - 1];
+
+      setPowerwallData(data);      
+    }
+    fetchData();
+    setInterval(fetchData, 5*60*1000);
+  }, [])
+
+  useEffect(() => {
+    if(powerwallData){
+      if(powerwallData.GRID == 0){
         setIsGridExporting(0);
-      } else if (data[0].GRID > 0){
+      } else if (powerwallData.GRID > 0){
         setIsGridExporting(1);
       } else {
         setIsGridExporting(2);
       }
-      data[0].SOLAR > 0 ? setIsSolar(1) : setIsSolar(0);
-      data[0].PERCENT_CHARGED > comparisonData[0].PERCENT_CHARGED ? setIsBatteryCharging(1) : setIsBatteryCharging(0);
+      powerwallData.SOLAR > 0 ? setIsSolar(1) : setIsSolar(0);
+
+      const batteryPower = powerwallData.LOAD - powerwallData.GRID + powerwallData.SOLAR;
+      if(batteryPower > 0){
+        //Powerwall is discharging
+        setIsBatteryCharging(2);
+      } else if(batteryPower < 0){
+        //Powerwall is charging
+        setIsBatteryCharging(1);
+      } else {
+        //Powerwall is idle
+        setIsBatteryCharging(0);
+      }
       
       const currentTime = new Date();
       if(currentTime.getHours() > 23 || currentTime.getHours() < 5){
@@ -93,10 +112,7 @@ export default function CustomBeamChart() {
         setIsCarCharging(0);
       }
     }
-    fetchData();
-    setInterval(fetchData, 5*60*1000);
-  }, [])
-
+  }, [powerwallData]);
 
   const gridAnimatedProps: AnimatedProps = {
     name: "grid",
@@ -131,8 +147,8 @@ export default function CustomBeamChart() {
     containerRef: containerRef,
     fromRef: batteryRef,
     toRef: homeRef,
-    beamColor: '#4338ca',
-    pathColor: '#3730a3'
+    beamColor: '#059669',
+    pathColor: '#047857'
   }
 
   if(!containerRef){

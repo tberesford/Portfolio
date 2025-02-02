@@ -1,4 +1,3 @@
-'use client';
 import NavbarComponent from "@/components/ui/navbarComponent";
 import CustomLineChart from "@/components/charts_recharts/LineChart";
 import { Card } from "@/components/ui/Cards";
