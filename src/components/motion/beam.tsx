@@ -156,29 +156,29 @@ export default function CustomBeamChart() {
   } else {
     return (
       <div
-        className='relative flex w-full mx-auto items-center justify-center p-10'
+        className='relative flex w-full m-0 items-center justify-center p-10'
         ref={containerRef}
       >
         <div className='flex h-full w-full flex-row items-stretch justify-between gap-10'>
           <div className='flex flex-col justify-center gap-4'>
             <Circle ref={solarRef}>
-              <GrActions size={23}/>
+              <GrActions size={20}/>
             </Circle>
             <Circle ref={gridRef}>
-              <GrAction size={23}/>
+              <GrAction size={20}/>
             </Circle>
           </div>
           <div className='flex flex-col justify-center gap-4'>
             <Circle ref={homeRef}>
-              <IoHome size={30}/>
+              <IoHome size={27}/>
             </Circle>
           </div>
           <div className='flex flex-col justify-center gap-4'>
             <Circle ref={carRef}>
-              <IoCarSport size={23}/>
+              <IoCarSport size={20}/>
             </Circle>
             <Circle ref={batteryRef}>
-              <TbHomeEco size={23}/>
+              <TbHomeEco size={20}/>
             </Circle>
           </div>
         </div>
