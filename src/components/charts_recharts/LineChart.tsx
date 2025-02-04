@@ -21,6 +21,7 @@ const CustomLine = (props: CustomLineProps) => {
 const CustomLineChart: React.FC = () => {
     var [LineData, setLineData] = useState<SolarArray>([]);
     var [tickInterval, setTickInterval] = useState(0);
+    const [angle, setAngle] = useState(0);
 
     useEffect(() => {
         async function fetchData() {
@@ -31,36 +32,40 @@ const CustomLineChart: React.FC = () => {
     }, []);
 
     useEffect(() => {
-            const updateTickInterval = () => {
+        const updateTickInterval = () => {
             if (window.innerWidth < 640) {
+                setAngle(-15);
                 setTickInterval(7); // Show fewer ticks on small screens
             } else if(window.innerWidth < 1024){
-                setTickInterval(5);
+                setAngle(-15);
+                setTickInterval(7);
             } else if(window.innerWidth < 1536){
                 setTickInterval(7);
             } else {
                 setTickInterval(5); // Default behavior (auto)
             }
-            };
+        };
+
+        updateTickInterval(); // Set initially
+        window.addEventListener('resize', updateTickInterval);
+        return () => window.removeEventListener('resize', updateTickInterval);
+    }, []);
     
-            updateTickInterval(); // Set initially
-            window.addEventListener('resize', updateTickInterval);
-            return () => window.removeEventListener('resize', updateTickInterval);
-        }, []);
 
     if(!LineData){
         return <div>Loading...</div>
     } else {
         return (
             <ResponsiveContainer width='90%' height='80%'>
-                <LineChart data={LineData} margin={{ right: 20, left: 20 }}>
+                <LineChart data={LineData} margin={{ right: 20, left: 20, bottom: -angle - 5 }}>
                     <CartesianGrid vertical={false} strokeOpacity={0.3} horizontalValues={[25, 50, 75, 100]}/>
                     <XAxis 
                         dataKey='TS'
                         tickMargin={7}
-                        interval={tickInterval}
                         fontSize={14}
+                        angle={angle}
                         ticks={GetTimeLabels(LineData)}
+                        interval={tickInterval}
                         tickFormatter={(value) => { 
                             const date = new Date(value);
                             const axisDate = date.toLocaleTimeString("en-GB", 

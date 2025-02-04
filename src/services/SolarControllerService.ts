@@ -3,7 +3,7 @@ import { SolarService } from './SolarService';
 
 const solarService = new SolarService();
 
-export default function ControllerService<SolarArray extends { TS: string; PERCENT_CHARGED: number; LOAD: number; SOLAR: number; GRID: number }[]>(schema: z.ZodSchema<SolarArray>, data: any) {
+export default function SolarControllerService<SolarArray extends { TS: string; PERCENT_CHARGED: number; LOAD: number; SOLAR: number; GRID: number }[]>(schema: z.ZodSchema<SolarArray>, data: any) {
     const result = schema.safeParse(data);
     if(!result.success){ return { error: result.error.format() } }
 

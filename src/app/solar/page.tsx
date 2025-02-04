@@ -30,7 +30,7 @@ export default function SolarPage () {
                         </Card>
                     </div>
                 </div>
-                <div className="grid min-h-56 row-start-2">
+                <div className="grid min-h-60 row-start-2">
                     <Card>
                         <CustomAreaChart/>
                     </Card>

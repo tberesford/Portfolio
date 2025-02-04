@@ -8,6 +8,8 @@ import { SolarArray } from "@/types/SolarTypes";
 const CustomAreaChart: React.FC = () => {
     const [AreaData, setAreaData] = useState<SolarArray>([]);
     const [tickInterval, setTickInterval] = useState(1);
+    const [angle, setAngle] = useState(0);
+
     useEffect(() => {
         async function fetchData(){
             const response = await axios.get("/api/solar?dayrange=1");
@@ -19,13 +21,17 @@ const CustomAreaChart: React.FC = () => {
 
     useEffect(() => {
         const updateTickInterval = () => {
-        if (window.innerWidth < 640) {
-            setTickInterval(7); // Show fewer ticks on small screens
-        } else if(window.innerWidth < 1024){
-            setTickInterval(4);
-        } else {
-            setTickInterval(1); // Default behavior (auto)
-        }
+            if (window.innerWidth < 640) {
+                setAngle(-15);
+                setTickInterval(7); // Show fewer ticks on small screens
+            } else if(window.innerWidth < 1024){
+                setAngle(-15);
+                setTickInterval(4);
+            } else if(window.innerWidth < 1536){
+                setTickInterval(2);
+            } else {
+                setTickInterval(1); // Default behavior (auto)
+            }
         };
 
         updateTickInterval(); // Set initially
@@ -38,7 +44,7 @@ const CustomAreaChart: React.FC = () => {
     } else {
         return (
             <ResponsiveContainer width='90%' height='80%'>
-                <AreaChart data={AreaData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                <AreaChart data={AreaData} margin={{ top: 10, right: 20, left: 10, bottom: -angle - 5 }}>
                     <defs>
                         <linearGradient id="colorSolar" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="5%" stopColor={`hsl(211.2, 83.2%, 53.3%)`} stopOpacity={0.8}/>
@@ -62,6 +68,7 @@ const CustomAreaChart: React.FC = () => {
                         dataKey="TS"
                         fontSize={14}
                         tickMargin={7}
+                        angle={angle}
                         ticks={GetTimeLabels(AreaData)}
                         interval={tickInterval}
                         tickFormatter={(value) => {
