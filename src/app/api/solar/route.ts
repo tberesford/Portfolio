@@ -9,8 +9,8 @@ export async function GET(request: NextRequest) {
     try{
         const blob = await BlobService(dayRange);
         const data = SolarControllerService(SolarModels, blob);
-        return NextResponse.json(data);
-    } catch (error){
-        return NextResponse.json(error);
+        return NextResponse.json({status: 200, data});
+    } catch (error: any){
+        return NextResponse.json({status: 500, error: error instanceof Error ? error.message : String(error)});
     }
 }

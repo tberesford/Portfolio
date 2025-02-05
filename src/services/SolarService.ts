@@ -46,8 +46,6 @@ export class SolarService{
                 }
             }
         }
-
-        // console.log(aggregatedData);
         return aggregatedData;
     }
 }

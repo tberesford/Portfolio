@@ -9,11 +9,16 @@ const CustomAreaChart: React.FC = () => {
     const [AreaData, setAreaData] = useState<SolarArray>([]);
     const [tickInterval, setTickInterval] = useState(1);
     const [angle, setAngle] = useState(0);
+    const [isError, setError] = useState("");
 
     useEffect(() => {
         async function fetchData(){
             const response = await axios.get("/api/solar?dayrange=1");
-            setAreaData(response.data);
+            if(response.data.status === 200){
+                setAreaData(response.data.data);
+            } else {
+                setError(response.data.error);
+            }
         }
         fetchData();
         setInterval(fetchData, (5*60*1000)); // 5 minutes?
@@ -39,7 +44,9 @@ const CustomAreaChart: React.FC = () => {
         return () => window.removeEventListener('resize', updateTickInterval);
     }, []);
 
-    if(!AreaData){
+    if(isError) {
+        return <div>{isError}</div>
+    } else if(!AreaData){
         return <div>Loading...</div>
     } else {
         return (

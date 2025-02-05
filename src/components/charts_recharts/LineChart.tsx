@@ -22,11 +22,16 @@ const CustomLineChart: React.FC = () => {
     var [LineData, setLineData] = useState<SolarArray>([]);
     var [tickInterval, setTickInterval] = useState(0);
     const [angle, setAngle] = useState(0);
+    const [isError, setError] = useState("");
 
     useEffect(() => {
         async function fetchData() {
             const response = await axios.get("/api/solar?dayrange=1");
-            setLineData(response.data);
+            if(response.data.status === 200){
+                setLineData(response.data.data);
+            } else {
+                setError(response.data.error);
+            }
         }
         fetchData();
     }, []);
@@ -52,7 +57,9 @@ const CustomLineChart: React.FC = () => {
     }, []);
     
 
-    if(!LineData){
+    if(isError) {
+        return <div>{isError}</div>
+    } else if(!LineData){
         return <div>Loading...</div>
     } else {
         return (

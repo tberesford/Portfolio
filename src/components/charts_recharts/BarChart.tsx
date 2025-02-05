@@ -6,16 +6,24 @@ import { SolarArray } from "@/types/SolarTypes";
 
 const CustomBarChart: React.FC = () => {
     const [BarData, setBarData] = useState<SolarArray>([]);
+    const [isError, setError] = useState("");
+
     useEffect(() => {
         async function fetchData(){
             const response = await axios.get("/api/solar?dayrange=1");
-            const data: SolarArray = [response.data[response.data.length - 1]];
-            setBarData(data);
+            if(response.data.status === 200){
+                const data: SolarArray = [response.data.data[response.data.data.length - 1]];
+                setBarData(data);
+            } else {
+                setError(response.data.error);
+            }
         }
         fetchData();
     }, [])
 
-    if(!BarData){
+    if(isError) {
+        return <div>{isError}</div>
+    } else if(!BarData){
         return <div>Loading...</div>
     } else {
         return (
