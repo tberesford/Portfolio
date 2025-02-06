@@ -8,6 +8,7 @@ import { IoHome } from "react-icons/io5";
 import { TbHomeEco } from "react-icons/tb";
 import axios from 'axios';
 import { SolarObject } from '@/types/SolarTypes';
+import { set } from 'zod';
 
 interface AnimatedProps {
   name: string,
@@ -74,7 +75,7 @@ export default function CustomBeamChart() {
     // Use props instead of call
     async function fetchData(){
       const response = await axios.get("api/solar?dayrange=1");
-      const data: SolarObject = response.data[response.data.length - 1];
+      const data: SolarObject = response.data.data[response.data.data.length - 1];
 
       setPowerwallData(data);      
     }
@@ -92,17 +93,19 @@ export default function CustomBeamChart() {
         setIsGridExporting(2);
       }
       powerwallData.SOLAR > 0 ? setIsSolar(1) : setIsSolar(0);
-
-      const batteryPower = powerwallData.LOAD - powerwallData.GRID + powerwallData.SOLAR;
-      if(batteryPower > 0){
-        //Powerwall is discharging
-        setIsBatteryCharging(2);
-      } else if(batteryPower < 0){
-        //Powerwall is charging
-        setIsBatteryCharging(1);
-      } else {
-        //Powerwall is idle
+      console.log(powerwallData.GRID, powerwallData.LOAD, powerwallData.SOLAR);
+      if((powerwallData.LOAD - powerwallData.SOLAR) === powerwallData.GRID){
+        // Battery is idle
         setIsBatteryCharging(0);
+      } else if((powerwallData.LOAD - powerwallData.SOLAR) > powerwallData.GRID && powerwallData.GRID < 0){
+        // Battery is exporting to result in GRID total
+        setIsBatteryCharging(2);
+      } else if((powerwallData.LOAD - powerwallData.SOLAR) > powerwallData.GRID && powerwallData.GRID > 0){
+        // Battery is discharging to home
+        setIsBatteryCharging(2);
+      } else if((powerwallData.SOLAR - powerwallData.LOAD) >= powerwallData.GRID && powerwallData.GRID >= 0){
+        // Battery is charging
+        setIsBatteryCharging(1);
       }
       
       const currentTime = new Date();
