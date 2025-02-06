@@ -93,7 +93,6 @@ export default function CustomBeamChart() {
         setIsGridExporting(2);
       }
       powerwallData.SOLAR > 0 ? setIsSolar(1) : setIsSolar(0);
-      console.log(powerwallData.GRID, powerwallData.LOAD, powerwallData.SOLAR);
       if((powerwallData.LOAD - powerwallData.SOLAR) === powerwallData.GRID){
         // Battery is idle
         setIsBatteryCharging(0);
