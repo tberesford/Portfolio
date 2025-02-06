@@ -8,7 +8,6 @@ import { IoHome } from "react-icons/io5";
 import { TbHomeEco } from "react-icons/tb";
 import axios from 'axios';
 import { SolarObject } from '@/types/SolarTypes';
-import { set } from 'zod';
 
 interface AnimatedProps {
   name: string,
